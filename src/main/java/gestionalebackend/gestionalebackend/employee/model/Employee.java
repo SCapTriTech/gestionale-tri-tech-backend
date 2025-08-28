@@ -1,11 +1,14 @@
 package gestionalebackend.gestionalebackend.employee.model;
 
+import gestionalebackend.gestionalebackend.technology.model.Technology;
 import jakarta.persistence.Entity;
 import lombok.*;
 
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "DIPENDENTI")
 @Setter
@@ -28,5 +31,13 @@ public class Employee {
     private Date dataDiNascita;
     private Date dataDiAssunzione;
     private Date dataDiLicenziamento;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "DIPENDENTI_TECNOLOGIE",
+        joinColumns = @JoinColumn(name = "employee_email"),
+        inverseJoinColumns = @JoinColumn(name = "technology_id")
+    )
+    private Set<Technology> technologies = new HashSet<>();
 
 }

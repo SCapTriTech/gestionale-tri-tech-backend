@@ -1,10 +1,13 @@
 package gestionalebackend.gestionalebackend.project.model;
 
+import gestionalebackend.gestionalebackend.technology.model.Technology;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity(name = "PROGETTI")
 @Table(name = "PROGETTI")
@@ -36,5 +39,13 @@ public class Project {
     
     @Column(nullable = false)
     private Boolean attivo = true;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "PROGETTI_TECNOLOGIE",
+        joinColumns = @JoinColumn(name = "project_id"),
+        inverseJoinColumns = @JoinColumn(name = "technology_id")
+    )
+    private Set<Technology> technologies = new HashSet<>();
     
 }

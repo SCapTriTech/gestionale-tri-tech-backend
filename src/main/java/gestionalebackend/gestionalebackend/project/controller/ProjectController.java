@@ -19,7 +19,7 @@ public interface ProjectController {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not Found"),
     })
-    @GetMapping
+    @GetMapping("/all")
     ResponseEntity<List<ProjectDTO>> getAllProjects();
     
     @Operation(summary = "Recupera solo i progetti attivi")
