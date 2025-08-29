@@ -1,5 +1,6 @@
 package gestionalebackend.gestionalebackend.project.model;
 
+import gestionalebackend.gestionalebackend.employee.model.Employee;
 import gestionalebackend.gestionalebackend.technology.model.Technology;
 import jakarta.persistence.*;
 import lombok.*;
@@ -47,5 +48,8 @@ public class Project {
         inverseJoinColumns = @JoinColumn(name = "technology_id")
     )
     private Set<Technology> technologies = new HashSet<>();
+    
+    @ManyToMany(mappedBy = "projects")
+    private Set<Employee> employees = new HashSet<>();
     
 }

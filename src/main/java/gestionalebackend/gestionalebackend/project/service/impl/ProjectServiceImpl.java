@@ -1,6 +1,7 @@
 package gestionalebackend.gestionalebackend.project.service.impl;
 
 import gestionalebackend.gestionalebackend.project.dto.ProjectDTO;
+import gestionalebackend.gestionalebackend.project.mapper.ProjectMapper;
 import gestionalebackend.gestionalebackend.project.model.Project;
 import gestionalebackend.gestionalebackend.project.repository.ProjectRepository;
 import gestionalebackend.gestionalebackend.project.service.ProjectService;
@@ -8,6 +9,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -25,7 +27,7 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectDTO> getAllProjects() {
         return projectRepository.findAll()
                 .stream()
-                .map(this::convertToDTO)
+                .map(ProjectMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
     
@@ -33,7 +35,7 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectDTO> getActiveProjects() {
         return projectRepository.findByAttivoTrue()
                 .stream()
-                .map(this::convertToDTO)
+                .map(ProjectMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
     
@@ -41,21 +43,21 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectDTO getProjectById(Long id) {
         Project project = projectRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Progetto non trovato con id: " + id));
-        return convertToDTO(project);
+        return ProjectMapper.convertToDTO(project);
     }
     
     @Override
     public ProjectDTO getProjectByCodice(String codiceProgetto) {
         Project project = projectRepository.findByCodiceProgetto(codiceProgetto)
                 .orElseThrow(() -> new EntityNotFoundException("Progetto non trovato con codice: " + codiceProgetto));
-        return convertToDTO(project);
+        return ProjectMapper.convertToDTO(project);
     }
     
     @Override
     public ProjectDTO createProject(ProjectDTO projectDTO) {
-        Project project = convertToEntity(projectDTO);
+        Project project = ProjectMapper.convertToDAO(projectDTO);
         Project savedProject = projectRepository.save(project);
-        return convertToDTO(savedProject);
+        return ProjectMapper.convertToDTO(savedProject);
     }
     
     @Override
@@ -84,7 +86,7 @@ public class ProjectServiceImpl implements ProjectService {
         }
         
         Project updatedProject = projectRepository.save(project);
-        return convertToDTO(updatedProject);
+        return ProjectMapper.convertToDTO(updatedProject);
     }
     
     @Override
@@ -99,31 +101,20 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectDTO> searchProjects(String nome) {
         return projectRepository.findByNomeContainingIgnoreCase(nome)
                 .stream()
-                .map(this::convertToDTO)
+                .map(ProjectMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
     
-    private ProjectDTO convertToDTO(Project project) {
-        return new ProjectDTO(
-                project.getId(),
-                project.getNome(),
-                project.getDescrizione(),
-                project.getReferenteProgetto(),
-                project.getDataInizio(),
-                project.getDataFine(),
-                project.getAttivo()
-        );
+    @Override
+    public List<ProjectDTO> getProjectsByIds(List<Long> ids) {
+        if (ids == null || ids.isEmpty()) {
+            return new ArrayList<>();
+        }
+        
+        return projectRepository.findAllById(ids)
+                .stream()
+                .map(ProjectMapper::convertToDTO)
+                .collect(Collectors.toList());
     }
     
-    private Project convertToEntity(ProjectDTO dto) {
-        return Project.builder()
-                .id(dto.id())
-                .nome(dto.nome())
-                .descrizione(dto.descrizione())
-                .referenteProgetto(dto.referenteProgetto())
-                .dataInizio(dto.dataInizio())
-                .dataFine(dto.dataFine())
-                .attivo(dto.attivo() != null ? dto.attivo() : true)
-                .build();
-    }
 }

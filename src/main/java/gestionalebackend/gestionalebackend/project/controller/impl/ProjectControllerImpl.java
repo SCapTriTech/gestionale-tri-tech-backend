@@ -66,4 +66,10 @@ public class ProjectControllerImpl implements ProjectController {
         List<ProjectDTO> projects = projectService.searchProjects(nome);
         return ResponseEntity.ok(projects);
     }
+    
+    @Override
+    public ResponseEntity<List<ProjectDTO>> getProjectsByIds(@RequestParam List<Long> ids) {
+        List<ProjectDTO> projects = projectService.getProjectsByIds(ids);
+        return ResponseEntity.ok(projects);
+    }
 }

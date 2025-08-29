@@ -4,6 +4,7 @@ import java.sql.Date;
 public record ProjectDTO(
         Long id,
         String nome,
+        String codiceProgetto,
         String descrizione,
         String referenteProgetto,
         Date dataInizio,

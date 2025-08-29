@@ -1,6 +1,7 @@
 package gestionalebackend.gestionalebackend.employee.dto;
 
 import java.sql.Date;
+import java.util.Set;
 
 public record EmployeeDTO(
 
@@ -14,7 +15,8 @@ public record EmployeeDTO(
         String indirizzo,
         Date dataDiNascita,
         Date dataDiAssunzione,
-        Date dataDiLicenziamento
+        Date dataDiLicenziamento,
+        Set<Long> projectIds
 
 ) {
 }

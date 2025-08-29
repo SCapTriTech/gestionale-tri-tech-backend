@@ -5,6 +5,7 @@ import gestionalebackend.gestionalebackend.employee.mapper.EmployeeMapper;
 import gestionalebackend.gestionalebackend.employee.model.Employee;
 import gestionalebackend.gestionalebackend.employee.repository.EmployeeRepository;
 import gestionalebackend.gestionalebackend.employee.service.EmployeeService;
+import gestionalebackend.gestionalebackend.project.repository.ProjectRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -17,16 +18,19 @@ import java.util.stream.Collectors;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final ProjectRepository projectRepository;
 
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, ProjectRepository projectRepository) {
         this.employeeRepository = employeeRepository;
+        this.projectRepository = projectRepository;
     }
 
 
     @Override
     public List<EmployeeDTO> getAllEmployees(Integer pageNumber, Integer pageSize) {
         Pageable pageable = PageRequest.of(pageNumber, pageSize);
-        return employeeRepository.findAll(pageable)
+        // Using optimized query that loads projects in single query
+        return employeeRepository.findAllWithProjects(pageable)
                 .stream()
                 .map(EmployeeMapper::convertToDTO)
                 .collect(Collectors.toList());
@@ -34,15 +38,18 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public EmployeeDTO getEmployeeById(String email) {
-        return employeeRepository.findById(email)
+        // Using optimized query that loads projects in single query
+        return employeeRepository.findByIdWithProjects(email)
                 .map(EmployeeMapper::convertToDTO)
                 .orElseThrow(() -> new EntityNotFoundException("Dipendente non trovato con email: " + email));
     }
 
     @Override
     public EmployeeDTO saveEmployee(EmployeeDTO employeeDTO) {
-        Employee employee = EmployeeMapper.convertToDAO(employeeDTO);
+        Employee employee = EmployeeMapper.convertToDAO(employeeDTO, projectRepository);
         Employee savedEmployee = employeeRepository.save(employee);
+        // Reload to get the projects relationship
+        savedEmployee = employeeRepository.findByIdWithProjects(savedEmployee.getEmail()).orElse(savedEmployee);
         return EmployeeMapper.convertToDTO(savedEmployee);
     }
 
@@ -86,8 +93,18 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employeeDTO.dataDiLicenziamento() != null) {
             employee.setDataDiLicenziamento(employeeDTO.dataDiLicenziamento());
         }
+        
+        // Update projects if provided
+        if (employeeDTO.projectIds() != null) {
+            employee.getProjects().clear();
+            if (!employeeDTO.projectIds().isEmpty()) {
+                employee.getProjects().addAll(projectRepository.findAllById(employeeDTO.projectIds()));
+            }
+        }
 
         Employee updatedEmployee = employeeRepository.save(employee);
+        // Reload to get the projects relationship
+        updatedEmployee = employeeRepository.findByIdWithProjects(updatedEmployee.getEmail()).orElse(updatedEmployee);
         return EmployeeMapper.convertToDTO(updatedEmployee);
     }
 

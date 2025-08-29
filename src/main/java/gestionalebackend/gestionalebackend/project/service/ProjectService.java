@@ -21,4 +21,6 @@ public interface ProjectService {
     void deleteProject(Long id);
     
     List<ProjectDTO> searchProjects(String nome);
+    
+    List<ProjectDTO> getProjectsByIds(List<Long> ids);
 }

@@ -49,4 +49,12 @@ public interface ProjectController {
     @Operation(summary = "Cerca progetti per nome")
     @GetMapping("/search")
     ResponseEntity<List<ProjectDTO>> searchProjects(@RequestParam String nome);
+    
+    @Operation(summary = "Recupera progetti per lista di ID")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "OK"),
+            @ApiResponse(responseCode = "400", description = "Bad Request - Invalid IDs"),
+    })
+    @GetMapping("/batch")
+    ResponseEntity<List<ProjectDTO>> getProjectsByIds(@RequestParam List<Long> ids);
 }

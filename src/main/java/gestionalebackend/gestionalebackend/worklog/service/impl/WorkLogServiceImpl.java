@@ -5,6 +5,7 @@ import gestionalebackend.gestionalebackend.project.repository.ProjectRepository;
 import gestionalebackend.gestionalebackend.worklog.dto.EmployeeYearlyData;
 import gestionalebackend.gestionalebackend.worklog.dto.WorkLogDTO;
 import gestionalebackend.gestionalebackend.worklog.dto.YearlyConsuntivoDTO;
+import gestionalebackend.gestionalebackend.worklog.mapper.WorkLogMapper;
 import gestionalebackend.gestionalebackend.worklog.model.DayType;
 import gestionalebackend.gestionalebackend.worklog.model.WorkLog;
 import gestionalebackend.gestionalebackend.worklog.repository.WorkLogRepository;
@@ -36,9 +37,9 @@ public class WorkLogServiceImpl implements WorkLogService {
     
     @Override
     public WorkLogDTO createWorkLog(WorkLogDTO workLogDTO) {
-        WorkLog workLog = convertToEntity(workLogDTO);
+        WorkLog workLog = WorkLogMapper.convertToDAO(workLogDTO, employeeRepository, projectRepository);
         WorkLog savedWorkLog = workLogRepository.save(workLog);
-        return convertToDTO(savedWorkLog);
+        return WorkLogMapper.convertToDTO(savedWorkLog);
     }
     
     @Override
@@ -63,7 +64,7 @@ public class WorkLogServiceImpl implements WorkLogService {
         }
         
         WorkLog updatedWorkLog = workLogRepository.save(workLog);
-        return convertToDTO(updatedWorkLog);
+        return WorkLogMapper.convertToDTO(updatedWorkLog);
     }
     
     @Override
@@ -78,14 +79,14 @@ public class WorkLogServiceImpl implements WorkLogService {
     public WorkLogDTO getWorkLogById(Long id) {
         WorkLog workLog = workLogRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("WorkLog non trovato con id: " + id));
-        return convertToDTO(workLog);
+        return WorkLogMapper.convertToDTO(workLog);
     }
     
     @Override
     public List<WorkLogDTO> getWorkLogsByEmployee(String employeeEmail, LocalDate startDate, LocalDate endDate) {
         return workLogRepository.findByEmployeeEmailAndDataBetween(employeeEmail, startDate, endDate)
                 .stream()
-                .map(this::convertToDTO)
+                .map(WorkLogMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
     
@@ -93,7 +94,7 @@ public class WorkLogServiceImpl implements WorkLogService {
     public List<WorkLogDTO> getWorkLogsByProject(Long projectId, LocalDate startDate, LocalDate endDate) {
         return workLogRepository.findByProjectIdAndDataBetween(projectId, startDate, endDate)
                 .stream()
-                .map(this::convertToDTO)
+                .map(WorkLogMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
     
@@ -101,7 +102,7 @@ public class WorkLogServiceImpl implements WorkLogService {
     public List<WorkLogDTO> getWorkLogsByDateRange(LocalDate startDate, LocalDate endDate) {
         return workLogRepository.findByDataBetween(startDate, endDate)
                 .stream()
-                .map(this::convertToDTO)
+                .map(WorkLogMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
     
@@ -111,7 +112,7 @@ public class WorkLogServiceImpl implements WorkLogService {
         return workLogRepository.findByEmployeeEmailAndProjectIdAndDataBetween(
                 employeeEmail, projectId, startDate, endDate)
                 .stream()
-                .map(this::convertToDTO)
+                .map(WorkLogMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
     
@@ -168,7 +169,7 @@ public class WorkLogServiceImpl implements WorkLogService {
     public List<WorkLogDTO> getMonthlyWorkLogs(Integer year, Integer month) {
         return workLogRepository.findByYearAndMonth(year, month)
                 .stream()
-                .map(this::convertToDTO)
+                .map(WorkLogMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
     
@@ -176,40 +177,8 @@ public class WorkLogServiceImpl implements WorkLogService {
     public List<WorkLogDTO> getEmployeeYearlyWorkLogs(String employeeEmail, Integer year) {
         return workLogRepository.findByEmployeeAndYear(employeeEmail, year)
                 .stream()
-                .map(this::convertToDTO)
+                .map(WorkLogMapper::convertToDTO)
                 .collect(Collectors.toList());
     }
     
-    private WorkLogDTO convertToDTO(WorkLog workLog) {
-        return new WorkLogDTO(
-                workLog.getId(),
-                workLog.getEmployee().getEmail(),
-                workLog.getEmployee().getNome() + " " + workLog.getEmployee().getCognome(),
-                workLog.getProject() != null ? workLog.getProject().getId() : null,
-                workLog.getProject() != null ? workLog.getProject().getNome() : null,
-                workLog.getData(),
-                workLog.getOre(),
-                workLog.getTipo(),
-                workLog.getNote()
-        );
-    }
-    
-    private WorkLog convertToEntity(WorkLogDTO dto) {
-        WorkLog workLog = new WorkLog();
-        workLog.setId(dto.id());
-        
-        workLog.setEmployee(employeeRepository.findById(dto.employeeEmail())
-                .orElseThrow(() -> new EntityNotFoundException("Dipendente non trovato: " + dto.employeeEmail())));
-        
-        if (dto.projectId() != null) {
-            workLog.setProject(projectRepository.findById(dto.projectId()).orElse(null));
-        }
-        
-        workLog.setData(dto.data());
-        workLog.setOre(dto.ore());
-        workLog.setTipo(dto.tipo());
-        workLog.setNote(dto.note());
-        
-        return workLog;
-    }
 }
