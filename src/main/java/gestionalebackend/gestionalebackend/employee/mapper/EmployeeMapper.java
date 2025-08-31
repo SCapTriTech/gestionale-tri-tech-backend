@@ -2,6 +2,7 @@ package gestionalebackend.gestionalebackend.employee.mapper;
 
 import gestionalebackend.gestionalebackend.employee.dto.EmployeeDTO;
 import gestionalebackend.gestionalebackend.employee.model.Employee;
+import gestionalebackend.gestionalebackend.permission.model.Permission;
 import gestionalebackend.gestionalebackend.project.model.Project;
 import gestionalebackend.gestionalebackend.project.repository.ProjectRepository;
 
@@ -27,6 +28,21 @@ public class EmployeeMapper {
                 employee.getProjects() != null ? 
                     employee.getProjects().stream()
                         .map(Project::getId)
+                        .collect(Collectors.toSet()) : null,
+                employee.getRole() != null ? employee.getRole().getId() : null,
+                employee.getRole() != null ? employee.getRole().getName() : null,
+                employee.getTeamLeader() != null ? employee.getTeamLeader().getEmail() : null,
+                employee.getTeamMembers() != null ?
+                    employee.getTeamMembers().stream()
+                        .map(Employee::getEmail)
+                        .collect(Collectors.toSet()) : null,
+                employee.getAdditionalPermissions() != null ?
+                    employee.getAdditionalPermissions().stream()
+                        .map(Permission::getId)
+                        .collect(Collectors.toSet()) : null,
+                employee.getAdditionalPermissions() != null ?
+                    employee.getAdditionalPermissions().stream()
+                        .map(Permission::getName)
                         .collect(Collectors.toSet()) : null
         );
     }

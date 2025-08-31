@@ -16,7 +16,13 @@ public record EmployeeDTO(
         Date dataDiNascita,
         Date dataDiAssunzione,
         Date dataDiLicenziamento,
-        Set<Long> projectIds
+        Set<Long> projectIds,
+        Long roleId,
+        String roleName,
+        String teamLeaderEmail,
+        Set<String> teamMemberEmails,
+        Set<Long> additionalPermissionIds,
+        Set<String> additionalPermissionNames
 
 ) {
 }

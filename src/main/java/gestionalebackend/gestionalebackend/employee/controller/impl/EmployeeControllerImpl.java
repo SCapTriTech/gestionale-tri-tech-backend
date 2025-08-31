@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -45,5 +46,56 @@ public class EmployeeControllerImpl implements EmployeeController {
     public ResponseEntity<Void> deleteEmployee(@PathVariable String id) {
         employeeService.deleteEmployee(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // Gestione ruoli
+    @Override
+    public ResponseEntity<EmployeeDTO> assignRoleToEmployee(@PathVariable String email, @PathVariable Long roleId) {
+        EmployeeDTO updatedEmployee = employeeService.assignRoleToEmployee(email, roleId);
+        return ResponseEntity.ok(updatedEmployee);
+    }
+
+    @Override
+    public ResponseEntity<EmployeeDTO> removeRoleFromEmployee(@PathVariable String email) {
+        EmployeeDTO updatedEmployee = employeeService.removeRoleFromEmployee(email);
+        return ResponseEntity.ok(updatedEmployee);
+    }
+
+    // Gestione team
+    @Override
+    public ResponseEntity<EmployeeDTO> assignTeamLeader(@PathVariable String email, @PathVariable String teamLeaderEmail) {
+        EmployeeDTO updatedEmployee = employeeService.assignTeamLeader(email, teamLeaderEmail);
+        return ResponseEntity.ok(updatedEmployee);
+    }
+
+    @Override
+    public ResponseEntity<EmployeeDTO> removeTeamLeader(@PathVariable String email) {
+        EmployeeDTO updatedEmployee = employeeService.removeTeamLeader(email);
+        return ResponseEntity.ok(updatedEmployee);
+    }
+
+    @Override
+    public ResponseEntity<List<EmployeeDTO>> getTeamMembers(@PathVariable String teamLeaderEmail) {
+        List<EmployeeDTO> teamMembers = employeeService.getTeamMembers(teamLeaderEmail);
+        return ResponseEntity.ok(teamMembers);
+    }
+
+    // Gestione permessi extra
+    @Override
+    public ResponseEntity<EmployeeDTO> addPermissionsToEmployee(@PathVariable String email, @RequestBody Set<Long> permissionIds) {
+        EmployeeDTO updatedEmployee = employeeService.addPermissionsToEmployee(email, permissionIds);
+        return ResponseEntity.ok(updatedEmployee);
+    }
+
+    @Override
+    public ResponseEntity<EmployeeDTO> removePermissionsFromEmployee(@PathVariable String email, @RequestBody Set<Long> permissionIds) {
+        EmployeeDTO updatedEmployee = employeeService.removePermissionsFromEmployee(email, permissionIds);
+        return ResponseEntity.ok(updatedEmployee);
+    }
+
+    @Override
+    public ResponseEntity<Set<String>> getEmployeePermissions(@PathVariable String email) {
+        Set<String> permissions = employeeService.getEmployeePermissions(email);
+        return ResponseEntity.ok(permissions);
     }
 }

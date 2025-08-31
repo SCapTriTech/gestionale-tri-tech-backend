@@ -39,8 +39,8 @@ public interface ProjectController {
     ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO projectDTO);
     
     @Operation(summary = "Aggiorna un progetto esistente")
-    @PutMapping("/{id}")
-    ResponseEntity<ProjectDTO> updateProject(@PathVariable Long id, @RequestBody ProjectDTO projectDTO);
+    @PutMapping("/codice/{codiceProgetto}")
+    ResponseEntity<ProjectDTO> updateProject(@PathVariable String codiceProgetto, @RequestBody ProjectDTO projectDTO);
     
     @Operation(summary = "Elimina un progetto")
     @DeleteMapping("/{id}")

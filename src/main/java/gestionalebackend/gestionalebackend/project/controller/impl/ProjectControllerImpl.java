@@ -50,8 +50,8 @@ public class ProjectControllerImpl implements ProjectController {
     }
     
     @Override
-    public ResponseEntity<ProjectDTO> updateProject(@PathVariable Long id, @RequestBody ProjectDTO projectDTO) {
-        ProjectDTO updatedProject = projectService.updateProject(id, projectDTO);
+    public ResponseEntity<ProjectDTO> updateProject(@PathVariable String codiceProgetto, @RequestBody ProjectDTO projectDTO) {
+        ProjectDTO updatedProject = projectService.updateProject(codiceProgetto, projectDTO);
         return ResponseEntity.ok(updatedProject);
     }
     

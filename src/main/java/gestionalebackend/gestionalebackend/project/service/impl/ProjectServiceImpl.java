@@ -61,9 +61,9 @@ public class ProjectServiceImpl implements ProjectService {
     }
     
     @Override
-    public ProjectDTO updateProject(Long id, ProjectDTO projectDTO) {
-        Project project = projectRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Progetto non trovato con id: " + id));
+    public ProjectDTO updateProject(String codiceProgetto, ProjectDTO projectDTO) {
+        Project project = projectRepository.findByCodiceProgetto(codiceProgetto)
+                .orElseThrow(() -> new EntityNotFoundException("Progetto non trovato con codiceProgetto: " + codiceProgetto));
         
         if (projectDTO.nome() != null) {
             project.setNome(projectDTO.nome());
