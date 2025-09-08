@@ -6,10 +6,11 @@ import java.util.Set;
 public record EmployeeDTO(
 
         String email,
+        
+        String googleId,
 
         String nome,
         String cognome,
-        String password,
         String codFiscale,
         String numeroDiTelefono,
         String indirizzo,
@@ -19,6 +20,8 @@ public record EmployeeDTO(
         Set<Long> projectIds,
         Long roleId,
         String roleName,
+        Long officeId,
+        String officeName,
         String teamLeaderEmail,
         Set<String> teamMemberEmails,
         Set<Long> additionalPermissionIds,

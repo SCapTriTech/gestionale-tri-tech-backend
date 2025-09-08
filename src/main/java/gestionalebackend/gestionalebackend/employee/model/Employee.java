@@ -4,6 +4,7 @@ import gestionalebackend.gestionalebackend.project.model.Project;
 import gestionalebackend.gestionalebackend.technology.model.Technology;
 import gestionalebackend.gestionalebackend.role.model.Role;
 import gestionalebackend.gestionalebackend.permission.model.Permission;
+import gestionalebackend.gestionalebackend.office.model.Office;
 import jakarta.persistence.Entity;
 import lombok.*;
 
@@ -24,10 +25,11 @@ public class Employee {
     @Id
     @Column(unique = true)
     private String email;
+    
+    private String googleId;
 
     private String nome;
     private String cognome;
-    private String password;
     private String codFiscale;
     private String numeroDiTelefono;
     private String indirizzo;
@@ -38,6 +40,10 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
+    
+    @ManyToOne
+    @JoinColumn(name = "office_id")
+    private Office office;
     
     @ManyToOne
     @JoinColumn(name = "team_leader_email")

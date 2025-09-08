@@ -1,5 +1,6 @@
 package gestionalebackend.gestionalebackend.role.controller;
 
+import gestionalebackend.gestionalebackend.permission.dto.PermissionDTO;
 import gestionalebackend.gestionalebackend.role.dto.RoleDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,4 +34,7 @@ public interface RoleController {
 
     @DeleteMapping("/{roleId}/permissions")
     ResponseEntity<RoleDTO> removePermissionsFromRole(@PathVariable Long roleId, @RequestBody Set<Long> permissionIds);
+
+    @GetMapping("/{roleId}/permissions")
+    ResponseEntity<List<PermissionDTO>> getRolePermissions(@PathVariable Long roleId);
 }

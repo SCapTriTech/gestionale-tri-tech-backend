@@ -22,6 +22,10 @@ public interface EmployeeService {
     EmployeeDTO removeTeamLeader(String employeeEmail);
     List<EmployeeDTO> getTeamMembers(String teamLeaderEmail);
     
+    // Gestione sede
+    EmployeeDTO assignOfficeToEmployee(String email, Long officeId);
+    EmployeeDTO removeOfficeFromEmployee(String email);
+    
     // Gestione permessi extra
     EmployeeDTO addPermissionsToEmployee(String email, Set<Long> permissionIds);
     EmployeeDTO removePermissionsFromEmployee(String email, Set<Long> permissionIds);

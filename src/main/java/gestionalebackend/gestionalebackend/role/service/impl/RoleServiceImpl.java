@@ -1,5 +1,7 @@
 package gestionalebackend.gestionalebackend.role.service.impl;
 
+import gestionalebackend.gestionalebackend.permission.dto.PermissionDTO;
+import gestionalebackend.gestionalebackend.permission.mapper.PermissionMapper;
 import gestionalebackend.gestionalebackend.permission.model.Permission;
 import gestionalebackend.gestionalebackend.permission.repository.PermissionRepository;
 import gestionalebackend.gestionalebackend.role.dto.RoleDTO;
@@ -22,6 +24,7 @@ public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
     private final RoleMapper roleMapper;
+    private final PermissionMapper permissionMapper;
 
     @Override
     @Transactional
@@ -123,5 +126,16 @@ public class RoleServiceImpl implements RoleService {
         role.getPermissions().removeIf(permission -> permissionIds.contains(permission.getId()));
         Role updatedRole = roleRepository.save(role);
         return roleMapper.toDTO(updatedRole);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<PermissionDTO> getRolePermissions(Long roleId) {
+        Role role = roleRepository.findById(roleId)
+                .orElseThrow(() -> new RuntimeException("Role not found with id: " + roleId));
+        
+        return role.getPermissions().stream()
+                .map(permissionMapper::toDTO)
+                .collect(Collectors.toList());
     }
 }

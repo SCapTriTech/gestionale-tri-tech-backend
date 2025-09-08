@@ -16,9 +16,9 @@ public class EmployeeMapper {
     public static EmployeeDTO convertToDTO(Employee employee){
         return new EmployeeDTO(
                 employee.getEmail(),
+                employee.getGoogleId(),
                 employee.getNome(),
                 employee.getCognome(),
-                employee.getPassword(),
                 employee.getCodFiscale(),
                 employee.getNumeroDiTelefono(),
                 employee.getIndirizzo(),
@@ -31,6 +31,8 @@ public class EmployeeMapper {
                         .collect(Collectors.toSet()) : null,
                 employee.getRole() != null ? employee.getRole().getId() : null,
                 employee.getRole() != null ? employee.getRole().getName() : null,
+                employee.getOffice() != null ? employee.getOffice().getId() : null,
+                employee.getOffice() != null ? employee.getOffice().getNomeSede() : null,
                 employee.getTeamLeader() != null ? employee.getTeamLeader().getEmail() : null,
                 employee.getTeamMembers() != null ?
                     employee.getTeamMembers().stream()
@@ -50,9 +52,9 @@ public class EmployeeMapper {
     public static Employee convertToDAO(EmployeeDTO employee){
         return Employee.builder()
                 .email(employee.email())
+                .googleId(employee.googleId())
                 .nome(employee.nome())
                 .cognome(employee.cognome())
-                .password(employee.password())
                 .codFiscale(employee.codFiscale())
                 .numeroDiTelefono(employee.numeroDiTelefono())
                 .indirizzo(employee.indirizzo())
@@ -66,9 +68,9 @@ public class EmployeeMapper {
     public static Employee convertToDAO(EmployeeDTO employee, ProjectRepository projectRepository){
         Employee emp = Employee.builder()
                 .email(employee.email())
+                .googleId(employee.googleId())
                 .nome(employee.nome())
                 .cognome(employee.cognome())
-                .password(employee.password())
                 .codFiscale(employee.codFiscale())
                 .numeroDiTelefono(employee.numeroDiTelefono())
                 .indirizzo(employee.indirizzo())

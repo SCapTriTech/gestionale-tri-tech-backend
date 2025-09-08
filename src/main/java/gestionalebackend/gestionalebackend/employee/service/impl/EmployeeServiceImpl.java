@@ -6,6 +6,8 @@ import gestionalebackend.gestionalebackend.employee.mapper.EmployeeMapper;
 import gestionalebackend.gestionalebackend.employee.model.Employee;
 import gestionalebackend.gestionalebackend.employee.repository.EmployeeRepository;
 import gestionalebackend.gestionalebackend.employee.service.EmployeeService;
+import gestionalebackend.gestionalebackend.office.model.Office;
+import gestionalebackend.gestionalebackend.office.repository.OfficeRepository;
 import gestionalebackend.gestionalebackend.permission.model.Permission;
 import gestionalebackend.gestionalebackend.permission.repository.PermissionRepository;
 import gestionalebackend.gestionalebackend.project.repository.ProjectRepository;
@@ -28,17 +30,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeeRepository employeeRepository;
     private final ProjectRepository projectRepository;
     private final RoleRepository roleRepository;
+    private final OfficeRepository officeRepository;
     private final PermissionRepository permissionRepository;
     private final AuthorizationService authorizationService;
 
     public EmployeeServiceImpl(EmployeeRepository employeeRepository, 
                               ProjectRepository projectRepository,
                               RoleRepository roleRepository,
+                              OfficeRepository officeRepository,
                               PermissionRepository permissionRepository,
                               AuthorizationService authorizationService) {
         this.employeeRepository = employeeRepository;
         this.projectRepository = projectRepository;
         this.roleRepository = roleRepository;
+        this.officeRepository = officeRepository;
         this.permissionRepository = permissionRepository;
         this.authorizationService = authorizationService;
     }
@@ -84,10 +89,6 @@ public class EmployeeServiceImpl implements EmployeeService {
             employee.setCognome(employeeDTO.cognome());
         }
 
-        if (employeeDTO.password() != null) {
-            employee.setPassword(employeeDTO.password());
-        }
-
         if (employeeDTO.codFiscale() != null) {
             employee.setCodFiscale(employeeDTO.codFiscale());
         }
@@ -110,6 +111,13 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         if (employeeDTO.dataDiLicenziamento() != null) {
             employee.setDataDiLicenziamento(employeeDTO.dataDiLicenziamento());
+        }
+        
+        // Update office if provided
+        if (employeeDTO.officeId() != null) {
+            Office office = officeRepository.findById(employeeDTO.officeId())
+                    .orElseThrow(() -> new EntityNotFoundException("Sede non trovata con id: " + employeeDTO.officeId()));
+            employee.setOffice(office);
         }
         
         // Update projects if provided
@@ -194,6 +202,33 @@ public class EmployeeServiceImpl implements EmployeeService {
         return teamLeader.getTeamMembers().stream()
                 .map(EmployeeMapper::convertToDTO)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public EmployeeDTO assignOfficeToEmployee(String email, Long officeId) {
+        Employee employee = employeeRepository.findById(email)
+                .orElseThrow(() -> new EntityNotFoundException("Dipendente non trovato con email: " + email));
+        
+        Office office = officeRepository.findById(officeId)
+                .orElseThrow(() -> new EntityNotFoundException("Sede non trovata con id: " + officeId));
+        
+        employee.setOffice(office);
+        Employee updatedEmployee = employeeRepository.save(employee);
+        updatedEmployee = employeeRepository.findByIdWithProjects(updatedEmployee.getEmail()).orElse(updatedEmployee);
+        return EmployeeMapper.convertToDTO(updatedEmployee);
+    }
+
+    @Override
+    @Transactional
+    public EmployeeDTO removeOfficeFromEmployee(String email) {
+        Employee employee = employeeRepository.findById(email)
+                .orElseThrow(() -> new EntityNotFoundException("Dipendente non trovato con email: " + email));
+        
+        employee.setOffice(null);
+        Employee updatedEmployee = employeeRepository.save(employee);
+        updatedEmployee = employeeRepository.findByIdWithProjects(updatedEmployee.getEmail()).orElse(updatedEmployee);
+        return EmployeeMapper.convertToDTO(updatedEmployee);
     }
 
     @Override

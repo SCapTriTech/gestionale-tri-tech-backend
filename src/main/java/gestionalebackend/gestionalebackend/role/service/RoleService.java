@@ -1,5 +1,6 @@
 package gestionalebackend.gestionalebackend.role.service;
 
+import gestionalebackend.gestionalebackend.permission.dto.PermissionDTO;
 import gestionalebackend.gestionalebackend.role.dto.RoleDTO;
 import java.util.List;
 import java.util.Set;
@@ -13,4 +14,5 @@ public interface RoleService {
     void deleteRole(Long id);
     RoleDTO addPermissionsToRole(Long roleId, Set<Long> permissionIds);
     RoleDTO removePermissionsFromRole(Long roleId, Set<Long> permissionIds);
+    List<PermissionDTO> getRolePermissions(Long roleId);
 }

@@ -1,5 +1,6 @@
 package gestionalebackend.gestionalebackend.role.controller.impl;
 
+import gestionalebackend.gestionalebackend.permission.dto.PermissionDTO;
 import gestionalebackend.gestionalebackend.role.controller.RoleController;
 import gestionalebackend.gestionalebackend.role.dto.RoleDTO;
 import gestionalebackend.gestionalebackend.role.service.RoleService;
@@ -63,5 +64,11 @@ public class RoleControllerImpl implements RoleController {
     public ResponseEntity<RoleDTO> removePermissionsFromRole(Long roleId, Set<Long> permissionIds) {
         RoleDTO updatedRole = roleService.removePermissionsFromRole(roleId, permissionIds);
         return ResponseEntity.ok(updatedRole);
+    }
+
+    @Override
+    public ResponseEntity<List<PermissionDTO>> getRolePermissions(Long roleId) {
+        List<PermissionDTO> permissions = roleService.getRolePermissions(roleId);
+        return ResponseEntity.ok(permissions);
     }
 }
