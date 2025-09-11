@@ -10,8 +10,8 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "PROGETTI")
-@Table(name = "PROGETTI")
+@Entity(name = "PROJECTS")
+@Table(name = "PROJECTS")
 @Setter
 @Getter
 @Builder
@@ -24,26 +24,26 @@ public class Project {
     private Long id;
     
     @Column(nullable = false, unique = true)
-    private String codiceProgetto;
+    private String projectCode;
     
     @Column(nullable = false)
-    private String nome;
+    private String name;
 
-    private String descrizione;
+    private String description;
 
     @Column(nullable = false)
-    private String referenteProgetto;
+    private String projectManager;
 
-    private Date dataInizio;
+    private Date startDate;
     
-    private Date dataFine;
+    private Date endDate;
     
     @Column(nullable = false)
-    private Boolean attivo = true;
+    private Boolean active = true;
     
     @ManyToMany
     @JoinTable(
-        name = "PROGETTI_TECNOLOGIE",
+        name = "PROJECTS_TECHNOLOGIES",
         joinColumns = @JoinColumn(name = "project_id"),
         inverseJoinColumns = @JoinColumn(name = "technology_id")
     )

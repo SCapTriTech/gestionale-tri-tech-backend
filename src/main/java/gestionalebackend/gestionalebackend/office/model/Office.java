@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "UFFICI")
+@Table(name = "OFFICES")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -21,17 +21,17 @@ public class Office {
     @Column(name = "id")
     private Long id;
     
-    @Column(name = "nome_sede", nullable = false)
-    private String nomeSede;
+    @Column(name = "office_name", nullable = false)
+    private String officeName;
     
-    @Column(name = "via", nullable = false)
-    private String via;
+    @Column(name = "street", nullable = false)
+    private String street;
     
-    @Column(name = "numero_civico", nullable = false)
-    private String numeroCivico;
+    @Column(name = "street_number", nullable = false)
+    private String streetNumber;
     
-    @Column(name = "posti_disponibili")
-    private Integer postiDisponibili;
+    @Column(name = "available_seats")
+    private Integer availableSeats;
     
     @OneToMany(mappedBy = "office", fetch = FetchType.LAZY)
     private Set<Employee> employees = new HashSet<>();

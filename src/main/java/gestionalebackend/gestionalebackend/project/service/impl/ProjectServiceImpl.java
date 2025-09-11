@@ -33,7 +33,7 @@ public class ProjectServiceImpl implements ProjectService {
     
     @Override
     public List<ProjectDTO> getActiveProjects() {
-        return projectRepository.findByAttivoTrue()
+        return projectRepository.findByActiveTrue()
                 .stream()
                 .map(ProjectMapper::convertToDTO)
                 .collect(Collectors.toList());
@@ -48,7 +48,7 @@ public class ProjectServiceImpl implements ProjectService {
     
     @Override
     public ProjectDTO getProjectByCodice(String codiceProgetto) {
-        Project project = projectRepository.findByCodiceProgetto(codiceProgetto)
+        Project project = projectRepository.findByProjectCode(codiceProgetto)
                 .orElseThrow(() -> new EntityNotFoundException("Progetto non trovato con codice: " + codiceProgetto));
         return ProjectMapper.convertToDTO(project);
     }
@@ -62,27 +62,27 @@ public class ProjectServiceImpl implements ProjectService {
     
     @Override
     public ProjectDTO updateProject(String codiceProgetto, ProjectDTO projectDTO) {
-        Project project = projectRepository.findByCodiceProgetto(codiceProgetto)
+        Project project = projectRepository.findByProjectCode(codiceProgetto)
                 .orElseThrow(() -> new EntityNotFoundException("Progetto non trovato con codiceProgetto: " + codiceProgetto));
         
-        if (projectDTO.nome() != null) {
-            project.setNome(projectDTO.nome());
+        if (projectDTO.name() != null) {
+            project.setName(projectDTO.name());
         }
 
-        if (projectDTO.descrizione() != null) {
-            project.setDescrizione(projectDTO.descrizione());
+        if (projectDTO.description() != null) {
+            project.setDescription(projectDTO.description());
         }
-        if (projectDTO.referenteProgetto() != null) {
-            project.setReferenteProgetto(projectDTO.referenteProgetto());
+        if (projectDTO.projectManager() != null) {
+            project.setProjectManager(projectDTO.projectManager());
         }
-        if (projectDTO.dataInizio() != null) {
-            project.setDataInizio(projectDTO.dataInizio());
+        if (projectDTO.startDate() != null) {
+            project.setStartDate(projectDTO.startDate());
         }
-        if (projectDTO.dataFine() != null) {
-            project.setDataFine(projectDTO.dataFine());
+        if (projectDTO.endDate() != null) {
+            project.setEndDate(projectDTO.endDate());
         }
-        if (projectDTO.attivo() != null) {
-            project.setAttivo(projectDTO.attivo());
+        if (projectDTO.active() != null) {
+            project.setActive(projectDTO.active());
         }
         
         Project updatedProject = projectRepository.save(project);
@@ -99,7 +99,7 @@ public class ProjectServiceImpl implements ProjectService {
     
     @Override
     public List<ProjectDTO> searchProjects(String nome) {
-        return projectRepository.findByNomeContainingIgnoreCase(nome)
+        return projectRepository.findByNameContainingIgnoreCase(nome)
                 .stream()
                 .map(ProjectMapper::convertToDTO)
                 .collect(Collectors.toList());

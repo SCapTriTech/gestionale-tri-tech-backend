@@ -13,25 +13,25 @@ import java.util.List;
 @Repository
 public interface WorkLogRepository extends JpaRepository<WorkLog, Long> {
     
-    List<WorkLog> findByEmployeeEmailAndDataBetween(String employeeEmail, LocalDate startDate, LocalDate endDate);
+    List<WorkLog> findByEmployeeEmailAndDateBetween(String employeeEmail, LocalDate startDate, LocalDate endDate);
     
-    List<WorkLog> findByProjectIdAndDataBetween(Long projectId, LocalDate startDate, LocalDate endDate);
+    List<WorkLog> findByProjectIdAndDateBetween(Long projectId, LocalDate startDate, LocalDate endDate);
     
-    List<WorkLog> findByDataBetween(LocalDate startDate, LocalDate endDate);
+    List<WorkLog> findByDateBetween(LocalDate startDate, LocalDate endDate);
     
-    List<WorkLog> findByEmployeeEmailAndProjectIdAndDataBetween(
+    List<WorkLog> findByEmployeeEmailAndProjectIdAndDateBetween(
             String employeeEmail, Long projectId, LocalDate startDate, LocalDate endDate);
     
-    @Query("SELECT w FROM ORE_LAVORATE w WHERE YEAR(w.data) = :year")
+    @Query("SELECT w FROM WORK_LOGS w WHERE YEAR(w.date) = :year")
     List<WorkLog> findByYear(@Param("year") int year);
     
-    @Query("SELECT w FROM ORE_LAVORATE w WHERE YEAR(w.data) = :year AND MONTH(w.data) = :month")
+    @Query("SELECT w FROM WORK_LOGS w WHERE YEAR(w.date) = :year AND MONTH(w.date) = :month")
     List<WorkLog> findByYearAndMonth(@Param("year") int year, @Param("month") int month);
     
-    @Query("SELECT w FROM ORE_LAVORATE w WHERE w.employee.email = :email AND YEAR(w.data) = :year")
+    @Query("SELECT w FROM WORK_LOGS w WHERE w.employee.email = :email AND YEAR(w.date) = :year")
     List<WorkLog> findByEmployeeAndYear(@Param("email") String email, @Param("year") int year);
     
-    List<WorkLog> findByEmployeeEmailAndData(String employeeEmail, LocalDate data);
+    List<WorkLog> findByEmployeeEmailAndDate(String employeeEmail, LocalDate date);
     
-    List<WorkLog> findByTipoAndDataBetween(DayType tipo, LocalDate startDate, LocalDate endDate);
+    List<WorkLog> findByDayTypeAndDateBetween(DayType dayType, LocalDate startDate, LocalDate endDate);
 }

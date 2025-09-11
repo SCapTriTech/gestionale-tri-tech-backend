@@ -10,12 +10,12 @@ import java.util.Optional;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
     
-    Optional<Project> findByCodiceProgetto(String codiceProgetto);
+    Optional<Project> findByProjectCode(String projectCode);
     
-    List<Project> findByReferenteProgetto(String referenteProgetto);
+    List<Project> findByProjectManager(String projectManager);
     
-    List<Project> findByAttivoTrue();
+    List<Project> findByActiveTrue();
     
-    List<Project> findByNomeContainingIgnoreCase(String nome);
+    List<Project> findByNameContainingIgnoreCase(String name);
 
 }

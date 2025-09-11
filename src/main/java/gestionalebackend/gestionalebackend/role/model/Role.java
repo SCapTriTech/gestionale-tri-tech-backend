@@ -8,7 +8,8 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "RUOLI")
+@Entity(name = "ROLES")
+@Table(name = "ROLES")
 @Setter
 @Getter
 @Builder
@@ -27,7 +28,7 @@ public class Role {
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "RUOLI_PERMESSI",
+        name = "ROLES_PERMISSIONS",
         joinColumns = @JoinColumn(name = "role_id"),
         inverseJoinColumns = @JoinColumn(name = "permission_id")
     )

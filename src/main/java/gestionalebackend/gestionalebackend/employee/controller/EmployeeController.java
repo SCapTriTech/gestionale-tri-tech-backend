@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
-@RequestMapping(path = "/api/v1/dipendente", produces = {"application/json", "application/hal+json"})
-@Tag(name = "employee-controller", description = "Gestione dei dipendenti")
+@RequestMapping(path = "/api/v1/employee", produces = {"application/json", "application/hal+json"})
+@Tag(name = "employee-controller", description = "Employee management")
 public interface EmployeeController {
 
-    @Operation(summary = "Recupera tutti i dipendenti")
+    @Operation(summary = "Get all employees")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not Found"),
@@ -26,7 +26,7 @@ public interface EmployeeController {
             @RequestParam(defaultValue = "10") Integer pageSize
     );
 
-    @Operation(summary = "Recupera il dipendente dall'ID")
+    @Operation(summary = "Get employee by ID")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not Found"),
@@ -34,7 +34,7 @@ public interface EmployeeController {
     @GetMapping("/{email}")
     ResponseEntity<EmployeeDTO> getEmployeeById(@PathVariable String email);
 
-    @Operation(summary = "Registra un nuovo dipendente")
+    @Operation(summary = "Register a new employee")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created"),
             @ApiResponse(responseCode = "400", description = "Bad Request"),
@@ -42,7 +42,7 @@ public interface EmployeeController {
     @PostMapping
     ResponseEntity<EmployeeDTO> saveEmployee(@RequestBody EmployeeDTO employeeDTO);
 
-    @Operation(summary = "Aggiorna l'anagrafica di un dipendente")
+    @Operation(summary = "Update employee details")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not Found"),
@@ -50,7 +50,7 @@ public interface EmployeeController {
     @PutMapping("/{id}")
     ResponseEntity<EmployeeDTO> updateEmployee(@PathVariable String id, @RequestBody EmployeeDTO employeeDTO);
 
-    @Operation(summary = "Elimina un dipendente")
+    @Operation(summary = "Delete an employee")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content"),
             @ApiResponse(responseCode = "404", description = "Not Found"),
@@ -58,8 +58,8 @@ public interface EmployeeController {
     @DeleteMapping("/{id}")
     ResponseEntity<Void> deleteEmployee(@PathVariable String id);
 
-    // Gestione ruoli
-    @Operation(summary = "Assegna un ruolo a un dipendente")
+    // Role management
+    @Operation(summary = "Assign a role to an employee")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not Found"),
@@ -67,7 +67,7 @@ public interface EmployeeController {
     @PutMapping("/{email}/role/{roleId}")
     ResponseEntity<EmployeeDTO> assignRoleToEmployee(@PathVariable String email, @PathVariable Long roleId);
 
-    @Operation(summary = "Rimuovi il ruolo da un dipendente")
+    @Operation(summary = "Remove role from an employee")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not Found"),
@@ -75,8 +75,8 @@ public interface EmployeeController {
     @DeleteMapping("/{email}/role")
     ResponseEntity<EmployeeDTO> removeRoleFromEmployee(@PathVariable String email);
 
-    // Gestione team
-    @Operation(summary = "Assegna un team leader a un dipendente")
+    // Team management
+    @Operation(summary = "Assign a team leader to an employee")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not Found"),
@@ -84,7 +84,7 @@ public interface EmployeeController {
     @PutMapping("/{email}/team-leader/{teamLeaderEmail}")
     ResponseEntity<EmployeeDTO> assignTeamLeader(@PathVariable String email, @PathVariable String teamLeaderEmail);
 
-    @Operation(summary = "Rimuovi il team leader da un dipendente")
+    @Operation(summary = "Remove team leader from an employee")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not Found"),
@@ -92,7 +92,7 @@ public interface EmployeeController {
     @DeleteMapping("/{email}/team-leader")
     ResponseEntity<EmployeeDTO> removeTeamLeader(@PathVariable String email);
 
-    @Operation(summary = "Ottieni i membri del team di un team leader")
+    @Operation(summary = "Get team members of a team leader")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not Found"),

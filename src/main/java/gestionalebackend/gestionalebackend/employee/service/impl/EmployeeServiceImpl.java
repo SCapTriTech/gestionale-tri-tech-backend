@@ -81,36 +81,36 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = employeeRepository.findById(email)
                 .orElseThrow(() -> new EntityNotFoundException("Dipendente non trovato con email: " + email));
 
-        if (employeeDTO.nome() != null) {
-            employee.setNome(employeeDTO.nome());
+        if (employeeDTO.firstName() != null) {
+            employee.setFirstName(employeeDTO.firstName());
         }
 
-        if (employeeDTO.cognome() != null) {
-            employee.setCognome(employeeDTO.cognome());
+        if (employeeDTO.lastName() != null) {
+            employee.setLastName(employeeDTO.lastName());
         }
 
-        if (employeeDTO.codFiscale() != null) {
-            employee.setCodFiscale(employeeDTO.codFiscale());
+        if (employeeDTO.fiscalCode() != null) {
+            employee.setFiscalCode(employeeDTO.fiscalCode());
         }
 
-        if (employeeDTO.numeroDiTelefono() != null) {
-            employee.setNumeroDiTelefono(employeeDTO.numeroDiTelefono());
+        if (employeeDTO.phoneNumber() != null) {
+            employee.setPhoneNumber(employeeDTO.phoneNumber());
         }
 
-        if (employeeDTO.indirizzo() != null) {
-            employee.setIndirizzo(employeeDTO.indirizzo());
+        if (employeeDTO.address() != null) {
+            employee.setAddress(employeeDTO.address());
         }
 
-        if (employeeDTO.dataDiNascita() != null) {
-            employee.setDataDiNascita(employeeDTO.dataDiNascita());
+        if (employeeDTO.birthDate() != null) {
+            employee.setBirthDate(employeeDTO.birthDate());
         }
 
-        if (employeeDTO.dataDiAssunzione() != null) {
-            employee.setDataDiAssunzione(employeeDTO.dataDiAssunzione());
+        if (employeeDTO.hireDate() != null) {
+            employee.setHireDate(employeeDTO.hireDate());
         }
 
-        if (employeeDTO.dataDiLicenziamento() != null) {
-            employee.setDataDiLicenziamento(employeeDTO.dataDiLicenziamento());
+        if (employeeDTO.terminationDate() != null) {
+            employee.setTerminationDate(employeeDTO.terminationDate());
         }
         
         // Update office if provided

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/permissions")
+@RequestMapping("/api/v1/permissions")
 public interface PermissionController {
 
     @PostMapping
@@ -21,7 +21,7 @@ public interface PermissionController {
     @GetMapping("/name/{name}")
     ResponseEntity<PermissionDTO> getPermissionByName(@PathVariable String name);
 
-    @GetMapping
+    @GetMapping("/all")
     ResponseEntity<List<PermissionDTO>> getAllPermissions();
 
     @DeleteMapping("/{id}")

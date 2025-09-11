@@ -12,13 +12,13 @@ public class ProjectMapper {
         
         return new ProjectDTO(
                 project.getId(),
-                project.getNome(),
-                project.getCodiceProgetto(),
-                project.getDescrizione(),
-                project.getReferenteProgetto(),
-                project.getDataInizio(),
-                project.getDataFine(),
-                project.getAttivo()
+                project.getName(),
+                project.getProjectCode(),
+                project.getDescription(),
+                project.getProjectManager(),
+                project.getStartDate(),
+                project.getEndDate(),
+                project.getActive()
         );
     }
     
@@ -29,13 +29,13 @@ public class ProjectMapper {
         
         return Project.builder()
                 .id(dto.id())
-                .nome(dto.nome())
-                .codiceProgetto(dto.codiceProgetto())
-                .descrizione(dto.descrizione())
-                .referenteProgetto(dto.referenteProgetto())
-                .dataInizio(dto.dataInizio())
-                .dataFine(dto.dataFine())
-                .attivo(dto.attivo() != null ? dto.attivo() : true)
+                .name(dto.name())
+                .projectCode(dto.projectCode())
+                .description(dto.description())
+                .projectManager(dto.projectManager())
+                .startDate(dto.startDate())
+                .endDate(dto.endDate())
+                .active(dto.active() != null ? dto.active() : true)
                 .build();
     }
 }

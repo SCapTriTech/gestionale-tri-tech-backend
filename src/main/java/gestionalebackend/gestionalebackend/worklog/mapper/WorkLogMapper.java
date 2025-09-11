@@ -16,13 +16,13 @@ public class WorkLogMapper {
         return new WorkLogDTO(
                 workLog.getId(),
                 workLog.getEmployee().getEmail(),
-                workLog.getEmployee().getNome() + " " + workLog.getEmployee().getCognome(),
+                workLog.getEmployee().getFirstName() + " " + workLog.getEmployee().getLastName(),
                 workLog.getProject() != null ? workLog.getProject().getId() : null,
-                workLog.getProject() != null ? workLog.getProject().getNome() : null,
-                workLog.getData(),
-                workLog.getOre(),
-                workLog.getTipo(),
-                workLog.getNote()
+                workLog.getProject() != null ? workLog.getProject().getName() : null,
+                workLog.getDate(),
+                workLog.getHours(),
+                workLog.getDayType(),
+                workLog.getNotes()
         );
     }
     
@@ -41,10 +41,10 @@ public class WorkLogMapper {
             workLog.setProject(projectRepository.findById(dto.projectId()).orElse(null));
         }
         
-        workLog.setData(dto.data());
-        workLog.setOre(dto.ore());
-        workLog.setTipo(dto.tipo());
-        workLog.setNote(dto.note());
+        workLog.setDate(dto.date());
+        workLog.setHours(dto.hours());
+        workLog.setDayType(dto.dayType());
+        workLog.setNotes(dto.notes());
         
         return workLog;
     }

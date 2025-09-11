@@ -17,14 +17,14 @@ public class EmployeeMapper {
         return new EmployeeDTO(
                 employee.getEmail(),
                 employee.getGoogleId(),
-                employee.getNome(),
-                employee.getCognome(),
-                employee.getCodFiscale(),
-                employee.getNumeroDiTelefono(),
-                employee.getIndirizzo(),
-                employee.getDataDiNascita(),
-                employee.getDataDiAssunzione(),
-                employee.getDataDiLicenziamento(),
+                employee.getFirstName(),
+                employee.getLastName(),
+                employee.getFiscalCode(),
+                employee.getPhoneNumber(),
+                employee.getAddress(),
+                employee.getBirthDate(),
+                employee.getHireDate(),
+                employee.getTerminationDate(),
                 employee.getProjects() != null ? 
                     employee.getProjects().stream()
                         .map(Project::getId)
@@ -32,7 +32,7 @@ public class EmployeeMapper {
                 employee.getRole() != null ? employee.getRole().getId() : null,
                 employee.getRole() != null ? employee.getRole().getName() : null,
                 employee.getOffice() != null ? employee.getOffice().getId() : null,
-                employee.getOffice() != null ? employee.getOffice().getNomeSede() : null,
+                employee.getOffice() != null ? employee.getOffice().getOfficeName() : null,
                 employee.getTeamLeader() != null ? employee.getTeamLeader().getEmail() : null,
                 employee.getTeamMembers() != null ?
                     employee.getTeamMembers().stream()
@@ -53,14 +53,14 @@ public class EmployeeMapper {
         return Employee.builder()
                 .email(employee.email())
                 .googleId(employee.googleId())
-                .nome(employee.nome())
-                .cognome(employee.cognome())
-                .codFiscale(employee.codFiscale())
-                .numeroDiTelefono(employee.numeroDiTelefono())
-                .indirizzo(employee.indirizzo())
-                .dataDiNascita(employee.dataDiNascita())
-                .dataDiAssunzione(employee.dataDiAssunzione())
-                .dataDiLicenziamento(employee.dataDiLicenziamento())
+                .firstName(employee.firstName())
+                .lastName(employee.lastName())
+                .fiscalCode(employee.fiscalCode())
+                .phoneNumber(employee.phoneNumber())
+                .address(employee.address())
+                .birthDate(employee.birthDate())
+                .hireDate(employee.hireDate())
+                .terminationDate(employee.terminationDate())
                 .projects(new HashSet<>())
                 .build();
     }
@@ -69,14 +69,14 @@ public class EmployeeMapper {
         Employee emp = Employee.builder()
                 .email(employee.email())
                 .googleId(employee.googleId())
-                .nome(employee.nome())
-                .cognome(employee.cognome())
-                .codFiscale(employee.codFiscale())
-                .numeroDiTelefono(employee.numeroDiTelefono())
-                .indirizzo(employee.indirizzo())
-                .dataDiNascita(employee.dataDiNascita())
-                .dataDiAssunzione(employee.dataDiAssunzione())
-                .dataDiLicenziamento(employee.dataDiLicenziamento())
+                .firstName(employee.firstName())
+                .lastName(employee.lastName())
+                .fiscalCode(employee.fiscalCode())
+                .phoneNumber(employee.phoneNumber())
+                .address(employee.address())
+                .birthDate(employee.birthDate())
+                .hireDate(employee.hireDate())
+                .terminationDate(employee.terminationDate())
                 .projects(new HashSet<>())
                 .build();
 

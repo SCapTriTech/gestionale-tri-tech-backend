@@ -23,33 +23,33 @@ public class DataInitializer {
     @Bean
     CommandLineRunner initDatabase() {
         return args -> {
-            // Controlla se i dati sono già presenti
+            // Check if data is already present
             if (permissionRepository.count() == 0 && roleRepository.count() == 0) {
                 
-                // Crea i permessi
-                Permission viewOwnProfile = createPermission("VIEW_OWN_PROFILE", "Visualizzare il proprio profilo");
-                Permission editOwnProfile = createPermission("EDIT_OWN_PROFILE", "Modificare il proprio profilo");
-                Permission viewAllProfiles = createPermission("VIEW_ALL_PROFILES", "Visualizzare tutti i profili");
-                Permission editTeamProfiles = createPermission("EDIT_TEAM_PROFILES", "Modificare i profili del proprio team");
-                Permission editAllProfiles = createPermission("EDIT_ALL_PROFILES", "Modificare tutti i profili");
-                Permission manageProjects = createPermission("MANAGE_PROJECTS", "Gestire i progetti");
-                Permission manageWorklogs = createPermission("MANAGE_WORKLOGS", "Gestire i worklogs");
-                Permission manageTeams = createPermission("MANAGE_TEAMS", "Gestire i team");
-                Permission manageRoles = createPermission("MANAGE_ROLES", "Gestire ruoli e permessi");
-                Permission viewReports = createPermission("VIEW_REPORTS", "Visualizzare i report");
-                Permission generateReports = createPermission("GENERATE_REPORTS", "Generare report");
+                // Create permissions
+                Permission viewOwnProfile = createPermission("VIEW_OWN_PROFILE", "View own profile");
+                Permission editOwnProfile = createPermission("EDIT_OWN_PROFILE", "Edit own profile");
+                Permission viewAllProfiles = createPermission("VIEW_ALL_PROFILES", "View all profiles");
+                Permission editTeamProfiles = createPermission("EDIT_TEAM_PROFILES", "Edit team profiles");
+                Permission editAllProfiles = createPermission("EDIT_ALL_PROFILES", "Edit all profiles");
+                Permission manageProjects = createPermission("MANAGE_PROJECTS", "Manage projects");
+                Permission manageWorklogs = createPermission("MANAGE_WORKLOGS", "Manage worklogs");
+                Permission manageTeams = createPermission("MANAGE_TEAMS", "Manage teams");
+                Permission manageRoles = createPermission("MANAGE_ROLES", "Manage roles and permissions");
+                Permission viewReports = createPermission("VIEW_REPORTS", "View reports");
+                Permission generateReports = createPermission("GENERATE_REPORTS", "Generate reports");
 
-                // Crea il ruolo DIPENDENTE
-                Role dipendente = Role.builder()
-                        .name("DIPENDENTE")
-                        .description("Dipendente standard")
+                // Create EMPLOYEE role
+                Role employee = Role.builder()
+                        .name("EMPLOYEE")
+                        .description("Standard employee")
                         .permissions(new HashSet<>(Arrays.asList(
                                 viewOwnProfile, editOwnProfile, viewAllProfiles
                         )))
                         .build();
-                roleRepository.save(dipendente);
+                roleRepository.save(employee);
 
-                // Crea il ruolo TEAM_COUNSELOR
+                // Create TEAM_COUNSELOR role
                 Role teamCounselor = Role.builder()
                         .name("TEAM_COUNSELOR")
                         .description("Team Counselor")
@@ -60,18 +60,18 @@ public class DataInitializer {
                         .build();
                 roleRepository.save(teamCounselor);
 
-                // Crea il ruolo AMMINISTRAZIONE con TUTTI i permessi
+                // Create ADMINISTRATION role with ALL permissions
                 Set<Permission> allPermissions = new HashSet<>(permissionRepository.findAll());
-                Role amministrazione = Role.builder()
-                        .name("AMMINISTRAZIONE")
-                        .description("Amministrazione")
+                Role administration = Role.builder()
+                        .name("ADMINISTRATION")
+                        .description("Administration")
                         .permissions(allPermissions)
                         .build();
-                roleRepository.save(amministrazione);
+                roleRepository.save(administration);
 
-                System.out.println("Database inizializzato con ruoli e permessi di base!");
+                System.out.println("Database initialized with base roles and permissions!");
             } else {
-                System.out.println("Database già inizializzato, skip dell'inizializzazione.");
+                System.out.println("Database already initialized, skipping initialization.");
             }
         };
     }

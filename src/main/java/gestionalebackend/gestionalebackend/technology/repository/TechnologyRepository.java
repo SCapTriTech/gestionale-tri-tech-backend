@@ -17,7 +17,7 @@ public interface TechnologyRepository extends JpaRepository<Technology, Long> {
     Optional<Technology> findByNameIgnoreCase(String name);
     
     @Modifying
-    @Query("DELETE FROM TECNOLOGIE t WHERE t.name = :name")
+    @Query("DELETE FROM TECHNOLOGIES t WHERE t.name = :name")
     void deleteByName(@Param("name") String name);
     
 }

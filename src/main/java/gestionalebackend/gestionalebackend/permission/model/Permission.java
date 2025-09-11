@@ -8,7 +8,8 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "PERMESSI")
+@Entity(name = "PERMISSIONS")
+@Table(name = "PERMISSIONS")
 @Setter
 @Getter
 @Builder

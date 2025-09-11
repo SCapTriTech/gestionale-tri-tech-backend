@@ -22,10 +22,10 @@ public class OfficeServiceImpl implements OfficeService {
     @Override
     public OfficeResponseDto createOffice(OfficeRequestDto requestDto) {
         Office office = new Office();
-        office.setNomeSede(requestDto.getNomeSede());
-        office.setVia(requestDto.getVia());
-        office.setNumeroCivico(requestDto.getNumeroCivico());
-        office.setPostiDisponibili(requestDto.getPostiDisponibili());
+        office.setOfficeName(requestDto.getOfficeName());
+        office.setStreet(requestDto.getStreet());
+        office.setStreetNumber(requestDto.getStreetNumber());
+        office.setAvailableSeats(requestDto.getAvailableSeats());
         
         Office savedOffice = officeRepository.save(office);
         return convertToResponseDto(savedOffice);
@@ -52,10 +52,10 @@ public class OfficeServiceImpl implements OfficeService {
         Office office = officeRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Office not found with id: " + id));
         
-        office.setNomeSede(requestDto.getNomeSede());
-        office.setVia(requestDto.getVia());
-        office.setNumeroCivico(requestDto.getNumeroCivico());
-        office.setPostiDisponibili(requestDto.getPostiDisponibili());
+        office.setOfficeName(requestDto.getOfficeName());
+        office.setStreet(requestDto.getStreet());
+        office.setStreetNumber(requestDto.getStreetNumber());
+        office.setAvailableSeats(requestDto.getAvailableSeats());
         
         Office updatedOffice = officeRepository.save(office);
         return convertToResponseDto(updatedOffice);
@@ -72,10 +72,10 @@ public class OfficeServiceImpl implements OfficeService {
     private OfficeResponseDto convertToResponseDto(Office office) {
         OfficeResponseDto responseDto = new OfficeResponseDto();
         responseDto.setId(office.getId());
-        responseDto.setNomeSede(office.getNomeSede());
-        responseDto.setVia(office.getVia());
-        responseDto.setNumeroCivico(office.getNumeroCivico());
-        responseDto.setPostiDisponibili(office.getPostiDisponibili());
+        responseDto.setOfficeName(office.getOfficeName());
+        responseDto.setStreet(office.getStreet());
+        responseDto.setStreetNumber(office.getStreetNumber());
+        responseDto.setAvailableSeats(office.getAvailableSeats());
         return responseDto;
     }
 }

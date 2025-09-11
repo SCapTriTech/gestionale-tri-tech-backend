@@ -8,8 +8,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@Entity(name = "ORE_LAVORATE")
-@Table(name = "ORE_LAVORATE")
+@Entity(name = "WORK_LOGS")
+@Table(name = "WORK_LOGS")
 @Setter
 @Getter
 @Builder
@@ -30,16 +30,16 @@ public class WorkLog {
     private Project project;
     
     @Column(nullable = false)
-    private LocalDate data;
+    private LocalDate date;
     
     @Column(nullable = false, precision = 4, scale = 2)
-    private BigDecimal ore;
+    private BigDecimal hours;
     
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private DayType tipo;
+    private DayType dayType;
     
     @Column(length = 500)
-    private String note;
+    private String notes;
     
 }

@@ -3,7 +3,9 @@ package gestionalebackend.gestionalebackend.technology.service.impl;
 import gestionalebackend.gestionalebackend.technology.dto.TechnologyDTO;
 import gestionalebackend.gestionalebackend.technology.mapper.TechnologyMapper;
 import gestionalebackend.gestionalebackend.technology.model.Technology;
+import gestionalebackend.gestionalebackend.technology.model.TechnologyCategory;
 import gestionalebackend.gestionalebackend.technology.repository.TechnologyRepository;
+import gestionalebackend.gestionalebackend.technology.repository.TechnologyCategoryRepository;
 import gestionalebackend.gestionalebackend.technology.service.TechnologyService;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,9 @@ public class TechnologyServiceImpl implements TechnologyService {
 
     @Autowired
     private TechnologyRepository technologyRepository;
+    
+    @Autowired
+    private TechnologyCategoryRepository categoryRepository;
 
     @Override
     public List<TechnologyDTO> findAll() {
@@ -48,6 +53,13 @@ public class TechnologyServiceImpl implements TechnologyService {
     @Transactional
     public TechnologyDTO create(TechnologyDTO technologyDTO) {
         Technology technology = TechnologyMapper.convertToDAO(technologyDTO);
+        
+        if (technologyDTO.category() != null && technologyDTO.category().getId() != null) {
+            TechnologyCategory category = categoryRepository.findById(technologyDTO.category().getId())
+                    .orElseThrow(() -> new RuntimeException("Category not found with id: " + technologyDTO.category().getId()));
+            technology.setCategory(category);
+        }
+        
         Technology savedTechnology = technologyRepository.save(technology);
         return TechnologyMapper.convertToDTO(savedTechnology);
     }
@@ -60,6 +72,15 @@ public class TechnologyServiceImpl implements TechnologyService {
             Technology technology = existingTechnology.get();
             technology.setName(technologyDTO.name());
             technology.setDescription(technologyDTO.description());
+            
+            if (technologyDTO.category() != null && technologyDTO.category().getId() != null) {
+                TechnologyCategory category = categoryRepository.findById(technologyDTO.category().getId())
+                        .orElseThrow(() -> new RuntimeException("Category not found with id: " + technologyDTO.category().getId()));
+                technology.setCategory(category);
+            } else {
+                technology.setCategory(null);
+            }
+            
             Technology updatedTechnology = technologyRepository.save(technology);
             return TechnologyMapper.convertToDTO(updatedTechnology);
         }
@@ -74,6 +95,15 @@ public class TechnologyServiceImpl implements TechnologyService {
             Technology technology = existingTechnology.get();
             technology.setName(technologyDTO.name());
             technology.setDescription(technologyDTO.description());
+            
+            if (technologyDTO.category() != null && technologyDTO.category().getId() != null) {
+                TechnologyCategory category = categoryRepository.findById(technologyDTO.category().getId())
+                        .orElseThrow(() -> new RuntimeException("Category not found with id: " + technologyDTO.category().getId()));
+                technology.setCategory(category);
+            } else {
+                technology.setCategory(null);
+            }
+            
             Technology updatedTechnology = technologyRepository.save(technology);
             return TechnologyMapper.convertToDTO(updatedTechnology);
         }

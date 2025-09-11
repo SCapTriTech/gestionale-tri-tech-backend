@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RequestMapping("/api/offices")
+@RequestMapping("/api/v1/offices")
 public interface OfficeController {
     
     @PostMapping
@@ -16,7 +16,7 @@ public interface OfficeController {
     @GetMapping("/{id}")
     ResponseEntity<OfficeResponseDto> getOfficeById(@PathVariable Long id);
     
-    @GetMapping
+    @GetMapping("/all")
     ResponseEntity<List<OfficeResponseDto>> getAllOffices();
     
     @PutMapping("/{id}")

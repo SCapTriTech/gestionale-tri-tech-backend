@@ -8,8 +8,8 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "TECNOLOGIE")
-@Table(name = "TECNOLOGIE")
+@Entity(name = "TECHNOLOGIES")
+@Table(name = "TECHNOLOGIES")
 @Setter
 @Getter
 @Builder
@@ -27,8 +27,12 @@ public class Technology {
     @Column(length = 500)
     private String description;
     
-    @ManyToMany(mappedBy = "technologies")
-    private Set<Employee> employees = new HashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private TechnologyCategory category;
+    
+    @OneToMany(mappedBy = "technology", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<EmployeeTechnologySkill> employeeSkills = new HashSet<>();
     
     @ManyToMany(mappedBy = "technologies")
     private Set<Project> projects = new HashSet<>();

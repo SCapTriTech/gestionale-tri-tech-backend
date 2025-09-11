@@ -2,6 +2,7 @@ package gestionalebackend.gestionalebackend.employee.model;
 
 import gestionalebackend.gestionalebackend.project.model.Project;
 import gestionalebackend.gestionalebackend.technology.model.Technology;
+import gestionalebackend.gestionalebackend.technology.model.EmployeeTechnologySkill;
 import gestionalebackend.gestionalebackend.role.model.Role;
 import gestionalebackend.gestionalebackend.permission.model.Permission;
 import gestionalebackend.gestionalebackend.office.model.Office;
@@ -14,7 +15,8 @@ import java.sql.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "DIPENDENTI")
+@Entity(name = "EMPLOYEES")
+@Table(name = "EMPLOYEES")
 @Setter
 @Getter
 @Builder
@@ -28,14 +30,14 @@ public class Employee {
     
     private String googleId;
 
-    private String nome;
-    private String cognome;
-    private String codFiscale;
-    private String numeroDiTelefono;
-    private String indirizzo;
-    private Date dataDiNascita;
-    private Date dataDiAssunzione;
-    private Date dataDiLicenziamento;
+    private String firstName;
+    private String lastName;
+    private String fiscalCode;
+    private String phoneNumber;
+    private String address;
+    private Date birthDate;
+    private Date hireDate;
+    private Date terminationDate;
     
     @ManyToOne
     @JoinColumn(name = "role_id")
@@ -54,23 +56,18 @@ public class Employee {
     
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-        name = "DIPENDENTI_PERMESSI_EXTRA",
+        name = "EMPLOYEES_ADDITIONAL_PERMISSIONS",
         joinColumns = @JoinColumn(name = "employee_email"),
         inverseJoinColumns = @JoinColumn(name = "permission_id")
     )
     private Set<Permission> additionalPermissions = new HashSet<>();
     
-    @ManyToMany
-    @JoinTable(
-        name = "DIPENDENTI_TECNOLOGIE",
-        joinColumns = @JoinColumn(name = "employee_email"),
-        inverseJoinColumns = @JoinColumn(name = "technology_id")
-    )
-    private Set<Technology> technologies = new HashSet<>();
+    @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<EmployeeTechnologySkill> technologySkills = new HashSet<>();
     
     @ManyToMany
     @JoinTable(
-        name = "DIPENDENTI_PROGETTI",
+        name = "EMPLOYEES_PROJECTS",
         joinColumns = @JoinColumn(name = "employee_email"),
         inverseJoinColumns = @JoinColumn(name = "project_id")
     )

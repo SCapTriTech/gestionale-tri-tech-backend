@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Set;
 
-@RequestMapping("/api/roles")
+@RequestMapping("/api/v1/roles")
 public interface RoleController {
 
     @PostMapping
@@ -23,7 +23,7 @@ public interface RoleController {
     @GetMapping("/name/{name}")
     ResponseEntity<RoleDTO> getRoleByName(@PathVariable String name);
 
-    @GetMapping
+    @GetMapping("/all")
     ResponseEntity<List<RoleDTO>> getAllRoles();
 
     @DeleteMapping("/{id}")

@@ -11,9 +11,9 @@ public record WorkLogDTO(
         String employeeName,
         Long projectId,
         String projectName,
-        LocalDate data,
-        BigDecimal ore,
-        DayType tipo,
-        String note
+        LocalDate date,
+        BigDecimal hours,
+        DayType dayType,
+        String notes
 ) {
 }

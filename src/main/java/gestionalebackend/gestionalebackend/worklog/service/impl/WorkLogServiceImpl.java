@@ -50,17 +50,17 @@ public class WorkLogServiceImpl implements WorkLogService {
         if (workLogDTO.projectId() != null) {
             workLog.setProject(projectRepository.findById(workLogDTO.projectId()).orElse(null));
         }
-        if (workLogDTO.data() != null) {
-            workLog.setData(workLogDTO.data());
+        if (workLogDTO.date() != null) {
+            workLog.setDate(workLogDTO.date());
         }
-        if (workLogDTO.ore() != null) {
-            workLog.setOre(workLogDTO.ore());
+        if (workLogDTO.hours() != null) {
+            workLog.setHours(workLogDTO.hours());
         }
-        if (workLogDTO.tipo() != null) {
-            workLog.setTipo(workLogDTO.tipo());
+        if (workLogDTO.dayType() != null) {
+            workLog.setDayType(workLogDTO.dayType());
         }
-        if (workLogDTO.note() != null) {
-            workLog.setNote(workLogDTO.note());
+        if (workLogDTO.notes() != null) {
+            workLog.setNotes(workLogDTO.notes());
         }
         
         WorkLog updatedWorkLog = workLogRepository.save(workLog);
@@ -84,7 +84,7 @@ public class WorkLogServiceImpl implements WorkLogService {
     
     @Override
     public List<WorkLogDTO> getWorkLogsByEmployee(String employeeEmail, LocalDate startDate, LocalDate endDate) {
-        return workLogRepository.findByEmployeeEmailAndDataBetween(employeeEmail, startDate, endDate)
+        return workLogRepository.findByEmployeeEmailAndDateBetween(employeeEmail, startDate, endDate)
                 .stream()
                 .map(WorkLogMapper::convertToDTO)
                 .collect(Collectors.toList());
@@ -92,7 +92,7 @@ public class WorkLogServiceImpl implements WorkLogService {
     
     @Override
     public List<WorkLogDTO> getWorkLogsByProject(Long projectId, LocalDate startDate, LocalDate endDate) {
-        return workLogRepository.findByProjectIdAndDataBetween(projectId, startDate, endDate)
+        return workLogRepository.findByProjectIdAndDateBetween(projectId, startDate, endDate)
                 .stream()
                 .map(WorkLogMapper::convertToDTO)
                 .collect(Collectors.toList());
@@ -100,7 +100,7 @@ public class WorkLogServiceImpl implements WorkLogService {
     
     @Override
     public List<WorkLogDTO> getWorkLogsByDateRange(LocalDate startDate, LocalDate endDate) {
-        return workLogRepository.findByDataBetween(startDate, endDate)
+        return workLogRepository.findByDateBetween(startDate, endDate)
                 .stream()
                 .map(WorkLogMapper::convertToDTO)
                 .collect(Collectors.toList());
@@ -109,7 +109,7 @@ public class WorkLogServiceImpl implements WorkLogService {
     @Override
     public List<WorkLogDTO> getWorkLogsByEmployeeAndProject(String employeeEmail, Long projectId, 
                                                             LocalDate startDate, LocalDate endDate) {
-        return workLogRepository.findByEmployeeEmailAndProjectIdAndDataBetween(
+        return workLogRepository.findByEmployeeEmailAndProjectIdAndDateBetween(
                 employeeEmail, projectId, startDate, endDate)
                 .stream()
                 .map(WorkLogMapper::convertToDTO)
@@ -122,13 +122,13 @@ public class WorkLogServiceImpl implements WorkLogService {
         String projectName = null;
         
         if (projectId != null) {
-            workLogs = workLogRepository.findByProjectIdAndDataBetween(
+            workLogs = workLogRepository.findByProjectIdAndDateBetween(
                     projectId, 
                     LocalDate.of(year, 1, 1), 
                     LocalDate.of(year, 12, 31)
             );
             projectName = projectRepository.findById(projectId)
-                    .map(p -> p.getNome())
+                    .map(p -> p.getName())
                     .orElse(null);
         } else {
             workLogs = workLogRepository.findByYear(year);
@@ -148,16 +148,16 @@ public class WorkLogServiceImpl implements WorkLogService {
             Map<Integer, Map<Integer, Map<DayType, BigDecimal>>> monthlyData = new HashMap<>();
             
             for (WorkLog log : empLogs) {
-                int month = log.getData().getMonthValue();
-                int day = log.getData().getDayOfMonth();
+                int month = log.getDate().getMonthValue();
+                int day = log.getDate().getDayOfMonth();
                 
                 monthlyData.computeIfAbsent(month, k -> new HashMap<>())
                           .computeIfAbsent(day, k -> new HashMap<>())
-                          .put(log.getTipo(), log.getOre());
+                          .put(log.getDayType(), log.getHours());
             }
             
-            String employeeName = empLogs.get(0).getEmployee().getNome() + " " + 
-                                 empLogs.get(0).getEmployee().getCognome();
+            String employeeName = empLogs.get(0).getEmployee().getFirstName() + " " + 
+                                 empLogs.get(0).getEmployee().getLastName();
             
             employeeDataList.add(new EmployeeYearlyData(email, employeeName, monthlyData));
         }

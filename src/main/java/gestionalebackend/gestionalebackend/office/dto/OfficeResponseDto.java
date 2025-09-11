@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class OfficeResponseDto {
     private Long id;
-    private String nomeSede;
-    private String via;
-    private String numeroCivico;
-    private Integer postiDisponibili;
+    private String officeName;
+    private String street;
+    private String streetNumber;
+    private Integer availableSeats;
 }

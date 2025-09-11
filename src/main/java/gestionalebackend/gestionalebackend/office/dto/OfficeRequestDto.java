@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class OfficeRequestDto {
-    private String nomeSede;
-    private String via;
-    private String numeroCivico;
-    private Integer postiDisponibili;
+    private String officeName;
+    private String street;
+    private String streetNumber;
+    private Integer availableSeats;
 }

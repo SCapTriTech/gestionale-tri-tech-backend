@@ -13,12 +13,12 @@ import java.util.Optional;
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, String> {
     
-    @Query("SELECT DISTINCT e FROM DIPENDENTI e LEFT JOIN FETCH e.projects")
+    @Query("SELECT DISTINCT e FROM EMPLOYEES e LEFT JOIN FETCH e.projects")
     List<Employee> findAllWithProjects();
     
-    @Query("SELECT DISTINCT e FROM DIPENDENTI e LEFT JOIN FETCH e.projects")
+    @Query("SELECT DISTINCT e FROM EMPLOYEES e LEFT JOIN FETCH e.projects")
     Page<Employee> findAllWithProjects(Pageable pageable);
     
-    @Query("SELECT e FROM DIPENDENTI e LEFT JOIN FETCH e.projects WHERE e.email = :email")
+    @Query("SELECT e FROM EMPLOYEES e LEFT JOIN FETCH e.projects WHERE e.email = :email")
     Optional<Employee> findByIdWithProjects(String email);
 }

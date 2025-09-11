@@ -19,7 +19,7 @@ public interface TechnologyController {
             @ApiResponse(responseCode = "200", description = "OK"),
             @ApiResponse(responseCode = "404", description = "Not Found"),
     })
-    @GetMapping
+    @GetMapping("/all")
     ResponseEntity<List<TechnologyDTO>> getAllTechnologies();
     
     @Operation(summary = "Recupera una tecnologia per ID")
